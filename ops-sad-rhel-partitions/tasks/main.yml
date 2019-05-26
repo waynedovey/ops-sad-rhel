@@ -1,0 +1,17 @@
+---
+# tasks file for ops-sad-rhel-partitions
+- name: volume_create.yml
+  include_tasks: volume_create.yml
+  tags: create
+
+- name: mount_volume.yml
+  include_tasks: mount_volume.yml
+  tags: create
+
+- name: mount_volume.yml
+  include_tasks: mount_volume.yml
+  tags: create
+
+- name: delete.yml
+  include_tasks: delete.yml
+  tags: delete

@@ -1,0 +1,20 @@
+---
+- name: Mount OCP empty Dir
+  mount:
+    path: /var/lib/origin/openshift.local.volumes
+    src: /dev/ocpvg/emptydirlv
+    fstype: xfs
+    opts: defaults
+    state: mounted 
+  tags: create
+  when: cluster_host is defined and cluster_host == true
+
+- name: Mount OCP ETCD Dir
+  mount:
+    path:  /var/lib/etcd
+    src: /dev/ocpvg/etcdlv
+    fstype: xfs
+    opts: defaults
+    state: mounted 
+  tags: create
+  when: master_host is defined and master_host == true

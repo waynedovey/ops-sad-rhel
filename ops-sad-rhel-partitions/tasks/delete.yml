@@ -1,0 +1,64 @@
+---
+- name: Mount OCP empty Dir
+  mount:
+    path: /var/lib/origin/openshift.local.volumes
+    src: /dev/ocpvg/emptydirlv
+    state: absent
+  tags: delete
+#  when: cluster_host is defined
+
+- name: Mount OCP ETCD Dir
+  mount:
+    path: /var/lib/etcd
+    src: /dev/ocpvg/etcdlv
+    state: absent
+  tags: delete
+#  when: master_host is defined
+
+- name: Remove the logical volume.
+  lvol:
+    vg: ocpvg
+    lv: emptydirlv
+    state: absent
+    force: yes
+  tags: delete
+#  when: cluster_host is defined
+
+- name: Create or resize a volume group on top of /dev/sdb1 and /dev/sdc5.
+  lvg:
+    vg: ocpvg
+    pvs: /dev/sdc,/dev/sdd
+    state: absent
+  tags: delete
+#  when: cluster_host is defined
+
+- name: Remove the physical disk
+  parted:
+    device: /dev/sdc
+    number: 1
+    state: absent
+  tags: delete
+
+- name: Remove the logical volume.
+  lvol:
+    vg: ocpvg
+    lv: etcdlv
+    state: absent
+    force: yes
+  tags: delete
+#  when: master_host is defined
+#
+- name: Create or resize a volume group on top of /dev/sdb1 and /dev/sdc5.
+  lvg:
+    vg: ocpvg
+    pvs: /dev/sdc,/dev/sdd
+    state: absent
+  tags: delete
+#  when: cluster_host is defined
+
+- name: Remove the physical disk
+  parted:
+    device: /dev/sdd
+    number: 1
+    state: absent
+  tags: delete

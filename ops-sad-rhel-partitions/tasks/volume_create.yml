@@ -1,0 +1,62 @@
+---
+- name: Create LV for ocpvg 
+  lvg: 
+    vg: ocpvg
+    pvs: /dev/sdc
+  tags: create
+  when: cluster_host is defined and cluster_host == true
+
+- name: Create OCP empty Dir
+  lvol:
+    vg: ocpvg
+    lv: emptydirlv
+    size: +100%FREE
+  tags: create
+  when: cluster_host is defined and cluster_host == true
+
+- name: Create LV for ocpvg 
+  lvg: 
+    vg: ocpvg
+    pvs: /dev/sdc
+  tags: create
+  when: master_host is defined and master_host == true
+
+- name: Create OCP empty Dir
+  lvol:
+    vg: ocpvg
+    lv: emptydirlv
+    size: +100%FREE
+  tags: create
+  when: master_host is defined and master_host == true
+
+- name: Extend LV for ocpvg 
+  lvg: 
+    vg: ocpvg
+    pvs: /dev/sdd
+  tags: create
+  when: master_host is defined and master_host == true
+
+- name: Create OCP ETCD Dir
+  lvol:
+    vg: ocpvg
+    lv: etcdlv
+    size: +100%FREE
+  tags: create
+  when: master_host is defined and master_host == true
+
+- name: Create a xfs filesystem on cluster host
+  filesystem:
+    fstype: xfs
+    dev: /dev/ocpvg/emptydirlv
+  tags: create
+  when: cluster_host is defined and cluster_host == true
+
+- name: Create a xfs filesystem on master
+  filesystem:
+    fstype: xfs
+    dev: "{{ item }}"
+  with_items:
+    - /dev/ocpvg/emptydirlv
+    - /dev/ocpvg/etcdlv
+  tags: create
+  when: master_host is defined and master_host == true

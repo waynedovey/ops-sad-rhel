@@ -1,0 +1,15 @@
+- name: Setup partitions for Masters
+  hosts: masters
+  vars:
+    cluster_host: false
+    master_host: true
+  roles:
+    - { role: ops-sad-rhel-partitions }
+
+- name: Setup partitions for All cluster nodes
+  hosts: nodes
+  vars:
+    cluster_host: true
+    master_host: false
+  roles:
+    - { role: ops-sad-rhel-partitions }
