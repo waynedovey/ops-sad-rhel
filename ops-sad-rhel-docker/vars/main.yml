@@ -1,0 +1,6 @@
+---
+# vars file for ops-sad-rhel-docker
+disk_device: sdb
+lvm_vg: dockervg
+lvm_lv: dockerlv
+storage_driver: overlay2

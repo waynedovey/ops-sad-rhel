@@ -1,0 +1,8 @@
+DEVS=/dev/{{ disk_device }}
+VG={{ lvm_vg }}
+DATA_SIZE=95%VG
+STORAGE_DRIVER={{ storage_driver }}
+CONTAINER_ROOT_LV_NAME={{ lvm_lv }}
+CONTAINER_ROOT_LV_MOUNT_PATH=/var/lib/docker
+CONTAINER_ROOT_LV_SIZE=100%FREE
+WIPE_SIGNATURES=true

@@ -1,0 +1,17 @@
+---
+# tasks file for ops-sad-rhel-docker
+- name: package.yml
+  include_tasks: package.yml
+  tags: install 
+
+- name: service.yml
+  include_tasks: service.yml
+  tags: install 
+
+- name: install.yml
+  include_tasks: install.yml
+  tags: install 
+
+- name: delete.yml
+  include_tasks: delete.yml
+  tags: delete

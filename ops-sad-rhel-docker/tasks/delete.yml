@@ -1,0 +1,61 @@
+---
+# create a directory if it doesn't exist
+- service:
+    name: docker 
+    state: stopped 
+    enabled: no
+  ignore_errors: yes
+
+- name: Remove the package
+  yum:
+    name: docker 
+    state: absent
+
+- name: Remove the package
+  yum: 
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - docker
+    - docker-common
+    - docker-rhel-push-plugin
+    - docker-client
+  register: task_result
+
+- name: Reboot immediately if there was a change.
+  shell: "sleep 5 && reboot"
+  async: 1
+  poll: 0
+  when: task_result is changed
+
+- name: Wait for the reboot to complete if there was a change.
+  wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
+  when: task_result is changed
+
+- name: Umount Docker 
+  mount:
+    #path: /dev/mapper/{{ lvm_vg }}-{{ lvm_lv }}
+    path: /var/lib/docker
+    state: unmounted
+
+- name: Remove the logical volume.
+  lvol:
+    vg: "{{ lvm_vg }}"
+    lv: "{{ lvm_lv }}" 
+    state: absent
+    force: yes
+
+- name: Remove the physical disk 
+  parted:
+    device: /dev/{{ disk_device }}
+    number: 1
+    state: absent
+
+- name: Remove the directory
+  file:
+    path: /var/lib/docker
+    state: absent

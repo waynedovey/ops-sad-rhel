@@ -1,0 +1,6 @@
+---
+- name: Install Docker 
+  yum:
+    name: docker 
+    state: installed
+  tags: installed 

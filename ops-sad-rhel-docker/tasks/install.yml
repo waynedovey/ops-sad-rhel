@@ -1,0 +1,28 @@
+---
+# create a directory if it doesn't exist
+- file:
+    path: /etc/sysconfig/docker-storage
+    state: absent
+
+- file:
+    path: /etc/docker/daemon.json
+    state: absent
+
+- name: Template a file to /etc/files.conf
+  template:
+    src: docker-storage-setup.j2
+    dest: /etc/sysconfig/docker-storage-setup
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: check if docker file exists 
+  stat: 
+    path: /etc/sysconfig/docker-storage
+  register: docker_storage
+
+- name: Run storage setup
+  shell: /usr/bin/docker-storage-setup
+  args:
+    executable: /bin/bash
+  when: docker_storage.stat.exists == false
