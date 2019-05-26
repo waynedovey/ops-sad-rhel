@@ -27,9 +27,10 @@ Including an example of how to use your role (for instance, with variables passe
       roles:
          - { role: username.rolename, x: 42 }
 
-ansible-playbook deploy_docker.yml --tags "install" --skip-tags "delete" -b
 
-ansible-playbook deploy_docker.yml --tags "delete" --skip-tags "install" -b
+ansible-playbook deploy_docker.yml --tags "install" -b
+
+ansible-playbook deploy_docker.yml --tags "delete" -b
 
 License
 -------
