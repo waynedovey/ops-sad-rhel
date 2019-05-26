@@ -3,10 +3,12 @@
 - file:
     path: /etc/sysconfig/docker-storage
     state: absent
+  tags: install
 
 - file:
     path: /etc/docker/daemon.json
     state: absent
+  tags: install
 
 - name: Template a file to /etc/files.conf
   template:
@@ -15,14 +17,17 @@
     owner: root
     group: root
     mode: '0644'
+  tags: install
 
 - name: check if docker file exists 
   stat: 
     path: /etc/sysconfig/docker-storage
   register: docker_storage
+  tags: install
 
 - name: Run storage setup
   shell: /usr/bin/docker-storage-setup
   args:
     executable: /bin/bash
   when: docker_storage.stat.exists == false
+  tags: install

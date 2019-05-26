@@ -1,9 +1,4 @@
 - name: Enable docker 
   hosts: testvms
   roles:
-    - {name: ops-sad-rhel-docker, tags: [install]}
-
-- name: Enable docker 
-  hosts: testvms
-  roles:
-    - {name: ops-sad-rhel-docker, tags: [delete]}
+    - { role: ops-sad-rhel-docker }

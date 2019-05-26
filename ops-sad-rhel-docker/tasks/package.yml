@@ -3,4 +3,4 @@
   yum:
     name: docker 
     state: installed
-  tags: installed 
+  tags: install

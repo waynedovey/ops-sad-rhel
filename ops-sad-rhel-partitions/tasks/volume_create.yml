@@ -1,8 +1,16 @@
 ---
+- name: Create PV for ocpvg 
+  parted:
+    device: /dev/sdc
+    number: 1
+    state: present
+  tags: create
+  when: cluster_host is defined and cluster_host == true
+
 - name: Create LV for ocpvg 
   lvg: 
     vg: ocpvg
-    pvs: /dev/sdc
+    pvs: /dev/sdc1
   tags: create
   when: cluster_host is defined and cluster_host == true
 
@@ -14,10 +22,26 @@
   tags: create
   when: cluster_host is defined and cluster_host == true
 
+- name: Create PV for ocpvg 
+  parted:
+    device: /dev/sdc
+    number: 1
+    state: present
+  tags: create
+  when: master_host is defined and master_host == true
+
+- name: Create PV for ocpvg 
+  parted:
+    device: /dev/sdd
+    number: 1
+    state: present
+  tags: create
+  when: master_host is defined and master_host == true
+
 - name: Create LV for ocpvg 
   lvg: 
     vg: ocpvg
-    pvs: /dev/sdc
+    pvs: /dev/sdc1
   tags: create
   when: master_host is defined and master_host == true
 
@@ -32,7 +56,7 @@
 - name: Extend LV for ocpvg 
   lvg: 
     vg: ocpvg
-    pvs: /dev/sdd
+    pvs: /dev/sdd1
   tags: create
   when: master_host is defined and master_host == true
 
