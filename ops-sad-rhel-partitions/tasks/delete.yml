@@ -5,7 +5,7 @@
     src: /dev/mapper/ocpvg-emptydirlv
     state: unmounted
   tags: delete
-#  when: cluster_host is defined
+  when: cluster_host is defined and cluster_host == true
 
 - name: Mount OCP ETCD Dir
   mount:
@@ -13,7 +13,7 @@
     src: /dev/mapper/ocpvg-etcdlv
     state: unmounted
   tags: delete
-#  when: master_host is defined
+  when: master_host is defined and master_host == true
 
 - name: Remove the logical volume.
   lvol:
@@ -22,16 +22,16 @@
     state: absent
     force: yes
   tags: delete
-#  when: cluster_host is defined
+  when: cluster_host is defined and cluster_host == true
 
 - name: Remove pvs 
   lvg:
     vg: ocpvg
-    pvs: /dev/sdc1,/dev/sdd1
+    pvs: /dev/sdc1
     state: absent
     force: true
   tags: delete
-#  when: cluster_host is defined
+  when: cluster_host is defined and cluster_host == true
 
 - name: Remove the physical disk
   parted:
@@ -39,6 +39,7 @@
     state: absent
     number: 1
   tags: delete
+  when: cluster_host is defined and cluster_host == true
 
 - name: Remove the logical volume.
   lvol:
@@ -47,8 +48,8 @@
     state: absent
     force: yes
   tags: delete
-#  when: master_host is defined
-#
+  when: master_host is defined and master_host == true
+ 
 - name: Remove pvs 
   lvg:
     vg: ocpvg
@@ -56,7 +57,7 @@
     state: absent
     force: true
   tags: delete
-#  when: cluster_host is defined
+  when: master_host is defined and master_host == true
 
 - name: Remove the physical disk
   parted:
@@ -64,6 +65,7 @@
     state: absent
     number: 1
   tags: delete
+  when: master_host is defined and master_host == true
 
 - name: Restart LVM service
   service:

@@ -10,7 +10,7 @@
     state: absent
   tags: install
 
-- name: Template a file to /etc/files.conf
+- name: Template a file for Docker Storage
   template:
     src: docker-storage-setup.j2
     dest: /etc/sysconfig/docker-storage-setup
@@ -19,7 +19,7 @@
     mode: '0644'
   tags: install
 
-- name: check if docker file exists 
+- name: Check if docker file exists 
   stat: 
     path: /etc/sysconfig/docker-storage
   register: docker_storage

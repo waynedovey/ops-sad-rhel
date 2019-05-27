@@ -1,5 +1,4 @@
 ---
-# create a directory if it doesn't exist
 - name: Enable service Docker is enabled and started 
   service:
     name: docker
